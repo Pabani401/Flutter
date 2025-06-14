@@ -48,6 +48,4 @@ assets/
 * Material Design
 
 
----
 
-Let me know if you'd like this customized further — for example, if your UI uses gender selection icons, custom colors, or any background images.
