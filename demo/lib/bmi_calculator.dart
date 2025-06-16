@@ -10,9 +10,14 @@ class BMICalculatorPage extends StatefulWidget {
 }
 class _BMICalculatorPageState extends State<BMICalculatorPage> {
   bool isMale = true;
-  int height = 183;
+  double height = 183;
   int weight = 74;
   int age = 30;
+
+ double calculateBMI() {
+    double heightInMeters = height / 100; // Convert cm to meters
+    return weight / (heightInMeters * heightInMeters);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -43,39 +48,53 @@ class _BMICalculatorPageState extends State<BMICalculatorPage> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Expanded(
-                        child: Container(
-                          padding: const EdgeInsets.all(20),
-                          decoration:isMale 
-                            ? kTileSelectedBorderDecoration 
-                            : kTileBorderDecoration,
-                          child: const Column(
-                            children: [Icon(
-                              Icons.male,
-                              size:50,
-                              color: kActiveCardColor,
-                              ), Text(
-                              "Male",
-                              style: TextStyle(fontSize: 24,color: kActiveCardColor),
-                              )],
+                        child: GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              isMale = true;
+                            });
+                          },
+                          child: Container(
+                            padding: const EdgeInsets.all(20),
+                            decoration:isMale 
+                              ? kTileSelectedBorderDecoration 
+                              : kTileBorderDecoration,
+                            child: const Column(
+                              children: [Icon(
+                                Icons.male,
+                                size:50,
+                                color: kActiveCardColor,
+                                ), Text(
+                                "Male",
+                                style: TextStyle(fontSize: 24,color: kActiveCardColor),
+                                )],
+                            ),
                           ),
                         ),
                       ),
                       const SizedBox(width: 5),
                       Expanded(
-                        child: Container(
-                          padding: const EdgeInsets.all(20),
-                          decoration: !isMale 
-                            ? kTileSelectedBorderDecoration 
-                            : kTileBorderDecoration,
-                          child: const Column(
-                            children: [Icon(
-                              Icons.female,
-                              size: 50,
-                              color: kActiveCardColor,
-                              ), Text(
-                                "Female",
-                              style: TextStyle(fontSize: 24,color: kActiveCardColor),
-                            )],
+                        child: GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              isMale = false;
+                            });
+                          },
+                          child: Container(
+                            padding: const EdgeInsets.all(20),
+                            decoration: !isMale 
+                              ? kTileSelectedBorderDecoration 
+                              : kTileBorderDecoration,
+                            child: const Column(
+                              children: [Icon(
+                                Icons.female,
+                                size: 50,
+                                color: kActiveCardColor,
+                                ), Text(
+                                  "Female",
+                                style: TextStyle(fontSize: 24,color: kActiveCardColor),
+                              )],
+                            ),
                           ),
                         ),
                       ),
@@ -99,14 +118,14 @@ class _BMICalculatorPageState extends State<BMICalculatorPage> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Text(
-                              "183",
-                              style: TextStyle(
+                              height.toStringAsFixed(2),
+                              style: const TextStyle(
                                 fontSize: 50,
                                 fontWeight: FontWeight.bold,
                                 color: kActiveCardColor
                               ),
                             ),
-                            Text(
+                            const Text(
                               "cm",
                               style: TextStyle
                                 (fontSize: 20, color: kActiveCardColor),
@@ -116,8 +135,12 @@ class _BMICalculatorPageState extends State<BMICalculatorPage> {
                         Slider(
                           min: 80,
                           max: 200,
-                          value: 180,
-                          onChanged: (value) {},
+                          value: height,
+                          onChanged: (value) {
+                            setState(() {
+                              height = value;
+                            });
+                          },
                           thumbColor: kBottomContainerColor,
                           activeColor: kActiveCardColor,
                         ),
@@ -141,8 +164,8 @@ class _BMICalculatorPageState extends State<BMICalculatorPage> {
                                 ),
                                 ),
                               Text(
-                                "74",
-                                style: TextStyle(
+                                "$weight",
+                                style: const TextStyle(
                                   fontSize: 50,
                                   fontWeight: FontWeight.bold,
                                   color: kActiveCardColor,
@@ -159,7 +182,12 @@ class _BMICalculatorPageState extends State<BMICalculatorPage> {
                                       const CircleBorder(),
                                       0.5,
                                     ),
-                                    onPressed: () {},
+                                    onPressed: () {
+                                      setState(() {
+                                        if (weight > 25)
+                                        weight--;
+                                      });
+                                    },
                                     child: Icon(Icons.remove,color: kActiveCardColor,),
                                   ),
                                   SizedBox(width: 10),
@@ -171,7 +199,12 @@ class _BMICalculatorPageState extends State<BMICalculatorPage> {
                                       const CircleBorder(),
                                       0.5,
                                     ),
-                                    onPressed: () {},
+                                    onPressed: () {
+                                      setState(() {
+                                        if (weight < 250)
+                                        weight++;
+                                      });
+                                    },
                                     child: Icon(Icons.add,color: kActiveCardColor,),
                                   ),
                                 ],
@@ -188,14 +221,14 @@ class _BMICalculatorPageState extends State<BMICalculatorPage> {
                           child: Column(
                             children: [
                               Text("Age",
-                                style: TextStyle(
+                                style:const TextStyle(
                                   color: kActiveCardColor
                                 ),
                         
                               ),
                               Text(
-                                "74",
-                                style: TextStyle(
+                                "$age",
+                                style: const TextStyle(
                                   fontSize: 50,
                                   fontWeight: FontWeight.bold,
                                   color: kActiveCardColor
@@ -212,7 +245,12 @@ class _BMICalculatorPageState extends State<BMICalculatorPage> {
                                       const CircleBorder(),
                                       0.5,
                                     ),
-                                    onPressed: () {},
+                                    onPressed: () {
+                                      setState(() {
+                                        if (age > 10)
+                                        age--;
+                                      });
+                                    },
                                     child: Icon(Icons.remove,color: kActiveCardColor,),
                                   ),
                                   SizedBox(width:20),
@@ -224,7 +262,12 @@ class _BMICalculatorPageState extends State<BMICalculatorPage> {
                                       const CircleBorder(),
                                       0.5,
                                     ),
-                                    onPressed: () {},
+                                    onPressed: () {
+                                      setState(() {
+                                        if (age < 110)
+                                        age++;
+                                      });
+                                    },
                                     child: Icon(Icons.add,color: kActiveCardColor,),
                                   ),
                                 ],
@@ -249,7 +292,32 @@ class _BMICalculatorPageState extends State<BMICalculatorPage> {
                       shape: RoundedRectangleBorder(),
                       minimumSize: const Size(double.infinity, 60),
                     ),
-                    onPressed: () {},
+                    onPressed: () {
+                      final bmi = calculateBMI();
+                      String result;
+                      if (bmi < 18.5) {
+                        result = "Underweight";
+                      } else if (bmi < 24.9) {
+                        result = "Normal weight";
+                      } else if (bmi < 29.9) {
+                        result = "Overweight";
+                      } else {
+                        result = "Obesity";
+                      }
+                      showDialog(
+                        context: context,
+                        builder: (context) => AlertDialog(
+                          title: Text("Your BMI"),
+                          content: Text("Your BMI is ${bmi.toStringAsFixed(2)}\nYou are classified as $result."),
+                          actions: [
+                            TextButton(
+                              onPressed: () => Navigator.of(context).pop(),
+                              child: Text("OK"),
+                            ),
+                          ],
+                        ),
+                      );
+                    },
                     child: Text('Calculate BMI', style:TextStyle(fontSize:20,color: kActiveCardColor),),
                   ),
                 ),
